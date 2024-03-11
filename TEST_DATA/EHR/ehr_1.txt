@@ -1,0 +1,13 @@
+John Doe, patient ID 110234,  a 55-year-old male, has a medical history that includes hypertension and type 2 diabetes. To manage his conditions, he was prescribed a medication regimen.
+
+For hypertension, John was initially prescribed Lisinopril at a daily dosage of 20 mg, administered orally. He started taking Lisinopril on May 5, 2021. Unfortunately, he developed an allergic reaction, experiencing rash and itching, which led to the discontinuation of Lisinopril on May 20, 2021.
+
+To address his type 2 diabetes, John took Metformin, with a dosage of 1000 mg orally twice daily. He began taking Metformin on May 1, 2021. However, he encountered gastrointestinal upset, including nausea and diarrhea, resulting in an adjustment of his Metformin dosage on May 15, 2021.
+
+As part of cardiovascular protection, John's healthcare provider advised him to take Aspirin, at a daily dosage of 81 mg orally, starting on June 1, 2021.
+
+In summary, John's medical history, medication regimen, and the reasons for medication adjustments have been noted to ensure his ongoing care.
+
+He has been advised to use X of Y with Z mg daily suffering for K.
+
+After assessing the patient's symptoms of persistent cough and shortness of breath, I recommend scheduling a chest X-ray next week to evaluate the progression of the pulmonary condition and to assess for any underlying abnormalities or changes in lung function.

@@ -1,0 +1,15 @@
+streamlit
+streamlit-audiorecorder
+torch  --index-url https://download.pytorch.org/whl/cu121
+transformers
+huggingface_hub
+flair
+seqeval
+tqdm
+
+
+
+git+https://github.com/stlukey/whispercpp.py
+
+
+
