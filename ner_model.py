@@ -74,9 +74,11 @@ def schedule_earliest_appointement(ehr_data, time_min = now, time_max = time_max
 
 
 def reschedule_earliest_appointement(ehr_data, date, time_min = now, time_max = time_max):
+    month, day   = process_date(date)
+    if(not month and not day ):
+        return "Please include which month and day you want to reschedule your appointment."
     now      = datetime(2024, 3, 18, 00, 00, 00).isoformat() + "Z"
     sch.delete_user_test(int(ehr_data['patient_id']['text']), time_min=now, time_max=time_max)
-    month, day   = process_date(date)
     now      = datetime(2024, month, day, 8, 00, 00).isoformat() + "Z"
     time_max = datetime(2024, month, 24, 23, 59, 59).isoformat() + "Z"
     return schedule_earliest_appointement(ehr_data, time_min=now, time_max=time_max)
@@ -88,6 +90,7 @@ def get_calendar_format(dateTimeString):
 
     # Extract day, hour, minute, and second components
     day = dateTime.strftime('%A')  # Get day name (e.g., Monday)
+    month_name  = dateTime.strftime("%B")
     time = dateTime.strftime('%I:%M %p')
     
     # # Adjust time for timezone
@@ -98,7 +101,7 @@ def get_calendar_format(dateTimeString):
         
     print(dateTimeString, day, time)
         
-    return str(dateTime.day) + " " + day + " " + str(time)
+    return str(dateTime.day) + " " + month_name + "," + day + " " + str(time)
 
 
 def check_if_day(v):
@@ -139,6 +142,8 @@ def process_date(date):
         day, string = extract_number_and_string(date)
         if day:
             return month, int(day)
+    else:
+        return None, None
         
     return month, 20 
         

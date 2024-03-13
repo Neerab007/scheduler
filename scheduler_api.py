@@ -94,7 +94,13 @@ def bot(history):
                 time.sleep(0.05)
                 yield history
                 
-            uploaded_file = False     
+            uploaded_file = False
+        else:
+            response = "No tests mentioned to shcedule an appointment. \n"
+            for word in response.split():
+                history[-1][1] += word + " "
+                time.sleep(0.05)
+                yield history    
     else:
         if mp3_uploaded_file:
             text = mp3_text[0]['text']
@@ -117,7 +123,10 @@ def bot(history):
                 yield history
                 
             reschedule_data = get_reschedule_details(text)
-            response = reschedule_earliest_appointement(ehr_data, (reschedule_data['date']['text']))
+            if 'date' in reschedule_data:
+                response = reschedule_earliest_appointement(ehr_data, (reschedule_data['date']['text']))
+            else:
+                response = "Please include which month and day you want to reschedule your appointment."
             
             time.sleep(2)
             
@@ -131,9 +140,10 @@ def bot(history):
             # response = reschedule_appointment(reschedule_data['date']['text'], ehr_data['patient_id']['text'])
             
             
+def greet(name):
+    return "Hello " + name + "!"
             
-gr.ChatInterface    
-
+examples=[ "Can you reschedule my appointment to <Date>.", "can you change the appointment to <Date>."]            
 
 with gr.Blocks() as demo:
     chatbot = gr.Chatbot(
@@ -145,14 +155,21 @@ with gr.Blocks() as demo:
         # avatar_images=(None, (os.path.join(os.path.dirname(__file__), "avatar.png"))),
     )
 
-    with gr.Row():
-        txt = gr.Textbox(
-            scale=4,
-            show_label=False,
-            placeholder="Enter the query or upload a EHR file",
-            container=False,
-        )
-        btn = gr.UploadButton("📁", file_types=["image", "video", "audio", "text"])
+    with gr.Column():
+        with gr.Row():
+            txt = gr.Textbox(
+                scale=10,
+                show_label=False,
+                placeholder="Enter the query and press enter or upload a EHR file or drop a voice message",
+                container=False,
+            )
+                #inter = gr.Interface(greet, inputs=txt,  outputs=None, submit_btn=False,  examples=examples)
+            
+            
+            btn = gr.UploadButton("📁", file_types=["image", "video", "audio", "text"],  scale = 1)
+            clear = gr.ClearButton([txt, chatbot]) 
+        
+        gr.Examples(examples=examples, inputs = txt, fn = greet, outputs=None)
 
     txt_msg = txt.submit(add_text, [chatbot, txt], [chatbot, txt], queue=False).then(
         bot, chatbot, chatbot, api_name="bot_response"
