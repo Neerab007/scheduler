@@ -190,8 +190,8 @@ class CalendarScheduler():
                     print("Found the member id")
                     event_id = event['id']
                     self.delete_events(event_id)
-                    return 1
-            return 0
+                    
+            return 1
         except Exception as e:
             print("error")
             return 0

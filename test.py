@@ -31,8 +31,10 @@ time_max = datetime(2024, 3, 24, 23, 59, 59).isoformat() + "Z"
 
 print(datetime(2024, 3, 18, 9, 00, 00)+timedelta(hours=1))
 
-sch.mock_data_creation()
+#sch.mock_data_creation()
+# sch.delete_all_events(time_min=now, time_max=time_max)
 
+# sch.mock_data_creation()
 
 #sch.delete_all_events(time_min=now, time_max=time_max)
 
@@ -221,3 +223,14 @@ def reschedule_appointment(time, date, id = 110234):
 
 
 # print(res_data)
+
+
+
+# import os
+
+# p = os.path.join(os.getcwd(), "TEST_DATA", "voice", "reschedule.mp3")
+
+# from ner_model import process_audio
+
+
+# print(process_audio([p])[0]['text'])

@@ -1,15 +1,22 @@
-from model import GLiNER
+
 from scheduler import CalendarScheduler
 from datetime  import datetime, timedelta
+from whisper_inference_pipeline.generate import Whisper
 import re
+from model import GLiNER
 
 model = GLiNER.from_pretrained("urchade/gliner_base")
+#model = None
 
-
-sch = CalendarScheduler()
+sch          = CalendarScheduler()
+whisper      = Whisper()
 
 now      = datetime(2024, 3, 18, 00, 00, 00).isoformat() + "Z"
 time_max = datetime(2024, 3, 24, 23, 59, 59).isoformat() + "Z"
+
+
+def process_audio(audio):
+    return whisper.extract(audio, path=True)
 
 def get_ehr_details(text):
     ehr_labels = ["test", "date", "time", "patient_id", "person"]

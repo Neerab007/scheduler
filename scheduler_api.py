@@ -1,15 +1,16 @@
 import gradio as gr
 import os
 import time
-from ner_model import get_ehr_details, get_reschedule_details  ,schedule_earliest_appointement, reschedule_appointment, reschedule_earliest_appointement
-
+from ner_model import get_ehr_details, get_reschedule_details  ,schedule_earliest_appointement, reschedule_earliest_appointement, process_audio
 
 
 # Chatbot demo with multimodal input (text, markdown, LaTeX, code blocks, image, audio, & video). Plus shows support for streaming text.
-
+print("hello")
 
 uploaded_file = False
 ehr_data = {}
+mp3_uploaded_file = False
+mp3_text = ""
 
 def print_like_dislike(x: gr.LikeData):
     print(x.index, x.value, x.liked)
@@ -22,7 +23,10 @@ def add_text(history, text):
 
 def add_file(history, file):
     global uploaded_file
+    global mp3_text
+    global mp3_uploaded_file
     file_type = os.path.splitext(file.name)[1]
+    print("file type", file_type)
     
     if(file_type == '.txt'):
        with open(file, mode='r', encoding='utf-8-sig') as f:
@@ -30,7 +34,18 @@ def add_file(history, file):
             history = history + [(text, None)]
             uploaded_file = True
             return history
+        
+    elif(file_type == '.mp3'):
+        print("file data", file)
+        mp3_text = process_audio([file])
+            #print("Transcribed text:", process_audio(audio_bytes))
+        mp3_uploaded_file = True
             
+             
+        
+        history = history + [((file.name,), None)]
+        return history
+                    
     history = history + [((file.name,), None)]
     return history
 
@@ -44,6 +59,8 @@ def bot(history):
     #response = "**That's cool!**"
     global uploaded_file
     global ehr_data
+    global mp3_text
+    global mp3_uploaded_file
     response=""
     print(type(history[-1][1]))
     history[-1][1] = ""
@@ -70,31 +87,39 @@ def bot(history):
             
             response = schedule_earliest_appointement(ehr_data)
             
-            time.sleep(1)
+            time.sleep(2)
             
             for word in response.split():
                 history[-1][1] += word + " "
                 time.sleep(0.05)
                 yield history
                 
-            uploaded_file = False
+            uploaded_file = False     
     else:
+        if mp3_uploaded_file:
+            text = mp3_text[0]['text']
+            mp3_uploaded_file = False
+        else:
+            text =  history[-1][0]
+            
         if(len(ehr_data) == 0 ):
-             response = "Please upload your EHR to fetch your details."
+             response = "Please upload EHR to fetch the details for scheduling appointment."
              for word in response.split():
                 history[-1][1] += word + " "
                 time.sleep(0.05)
                 yield history
             
-        elif(('reschedule' or 'book' or 'appointment' in history[-1][0])):  
+        elif(('reschedule' or 'book' or 'appointment' in text)):  
             response = "Let me pull up the slots to reschedule it."
             for word in response.split():
                 history[-1][1] += word + " "
                 time.sleep(0.05)
                 yield history
                 
-            reschedule_data = get_reschedule_details(history[-1][0])
+            reschedule_data = get_reschedule_details(text)
             response = reschedule_earliest_appointement(ehr_data, (reschedule_data['date']['text']))
+            
+            time.sleep(2)
             
             for word in response.split():
                 history[-1][1] += word + " "
