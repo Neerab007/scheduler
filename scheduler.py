@@ -238,24 +238,30 @@ class CalendarScheduler():
 
 
     def mock_data_creation(self):
-        start = datetime.utcnow().day
-        end   = int(start) + 7
-        for day in range(start,end):
-            hours = random.sample(range(8, 17), 5)
-            for hour in hours:
-                name = self.generate_random_name()
-                test = self.generate_random_test()
-                summary = self.generate_random_id() + "  " + name + " " + test
-                description = "Appointment for " + test
-                colorId = random.randint(3,10)
-                
-                
-                start_time = self.create_date_time_object(2024, 3, day, hour, 00, 00 )
-                end_time   = self.create_date_time_object(2024, 3, day, hour+1, 00,00)
-                start = {'dateTime' : start_time, 'timezone' : "America/Chicago"}
-                end   = {'dateTime' : end_time, 'timezone'   : "America/Chicago"}
-                
-                self.create_event(start=start, end=end, summary=summary, description=description, colorId=colorId)
+        start_day = datetime.utcnow().day
+        start_month = datetime.utcnow().month
+        end_month   = start_month + 1
+        end_day   = 30
+
+        for month in range(start_month, end_month+1):
+            print("Month:", month)
+            for day in range(start_day,end_day):
+                hours = random.sample(range(8, 17), 5)
+                for hour in hours:
+                    name = self.generate_random_name()
+                    test = self.generate_random_test()
+                    summary = self.generate_random_id() + "  " + name + " " + test
+                    description = "Appointment for " + test
+                    colorId = random.randint(3,10)
+                    
+                    
+                    start_time = self.create_date_time_object(2024, month, day, hour, 00, 00 )
+                    end_time   = self.create_date_time_object(2024, month, day, hour+1, 00,00)
+                    start = {'dateTime' : start_time, 'timezone' : "America/Chicago"}
+                    end   = {'dateTime' : end_time, 'timezone'   : "America/Chicago"}
+                    
+                    self.create_event(start=start, end=end, summary=summary, description=description, colorId=colorId)
+            start_day = 1
         
 
 # if __name__ == "__main__":

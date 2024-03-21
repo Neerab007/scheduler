@@ -13,11 +13,21 @@ whisper      = Whisper()
 
 
 start_day = datetime.utcnow().day
+month = datetime.utcnow().month 
 
-now      = datetime(2024, 3, start_day, 00, 00, 00).isoformat() + "Z"
+today = datetime.today()
+
+days_to_subtract = (7- today.weekday()) % 7
+
+latest_monday = today +  timedelta(days = days_to_subtract)
+
+start_day = latest_monday.date().day
 
 
-time_max = datetime(2024, 3, start_day + 7, 23, 59, 59).isoformat() + "Z"
+now      = datetime(2024, month, start_day, 00, 00, 00).isoformat() + "Z"
+
+
+time_max = datetime(2024, month +1 , 30, 23, 59, 59).isoformat() + "Z"
 
 
 def process_audio(audio):
@@ -75,17 +85,17 @@ def schedule_earliest_appointement(ehr_data, time_min = now, time_max = time_max
         else:
             return "System Down come back later"
         
-    return "No Appointments availiable for next week"
+    return "No Appointments availiable for the requested date"
 
 
 def reschedule_earliest_appointement(ehr_data, date, time_min = now, time_max = time_max):
     month, day   = process_date(date)
     if(not month and not day ):
         return "Please include which month and day you want to reschedule your appointment."
-    now      = datetime(2024, 3, 18, 00, 00, 00).isoformat() + "Z"
+    now      = datetime(2024, month, start_day, 00, 00, 00).isoformat() + "Z"
     sch.delete_user_test(int(ehr_data['patient_id']['text']), time_min=now, time_max=time_max)
     now      = datetime(2024, month, day, 8, 00, 00).isoformat() + "Z"
-    time_max = datetime(2024, month, 24, 23, 59, 59).isoformat() + "Z"
+    time_max = datetime(2024, month, 30, 23, 59, 59).isoformat() + "Z"
     return schedule_earliest_appointement(ehr_data, time_min=now, time_max=time_max)
 
 

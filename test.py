@@ -26,12 +26,28 @@ After assessing the patient's symptoms of persistent cough and shortness of brea
 
 sch = CalendarScheduler()
 
-now      = datetime(2024, 3, 18, 8, 00, 00).isoformat() + "Z"
-time_max = datetime(2024, 3, 24, 23, 59, 59).isoformat() + "Z"
+start_day   = datetime.utcnow().day
+end_day     = start_day + 30
+start_month = datetime.utcnow().month 
+end_month   = start_month + 1
+
+now      = datetime(2024, start_month, start_day, 8, 00, 00).isoformat() + "Z"
+time_max = datetime(2024, end_month, 30, 23, 59, 59).isoformat() + "Z"
 
 print(datetime(2024, 3, 18, 9, 00, 00)+timedelta(hours=1))
 
-print(datetime.utcnow().day + 7)
+
+#sch.delete_all_events(time_min=now, time_max=time_max)
+
+
+today = datetime.today()
+
+days_to_subtract = (7- today.weekday()) % 7
+
+latest_monday = today +  timedelta(days = days_to_subtract)
+
+print("latest monday:")
+print(latest_monday.date().day)
 
 #sch.mock_data_creation()
 # sch.delete_all_events(time_min=now, time_max=time_max)
