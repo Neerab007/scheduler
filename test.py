@@ -31,6 +31,8 @@ time_max = datetime(2024, 3, 24, 23, 59, 59).isoformat() + "Z"
 
 print(datetime(2024, 3, 18, 9, 00, 00)+timedelta(hours=1))
 
+print(datetime.utcnow().day + 7)
+
 #sch.mock_data_creation()
 # sch.delete_all_events(time_min=now, time_max=time_max)
 

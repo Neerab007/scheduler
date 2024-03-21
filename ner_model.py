@@ -11,8 +11,13 @@ model = GLiNER.from_pretrained("urchade/gliner_base")
 sch          = CalendarScheduler()
 whisper      = Whisper()
 
-now      = datetime(2024, 3, 18, 00, 00, 00).isoformat() + "Z"
-time_max = datetime(2024, 3, 24, 23, 59, 59).isoformat() + "Z"
+
+start_day = datetime.utcnow().day
+
+now      = datetime(2024, 3, start_day, 00, 00, 00).isoformat() + "Z"
+
+
+time_max = datetime(2024, 3, start_day + 7, 23, 59, 59).isoformat() + "Z"
 
 
 def process_audio(audio):

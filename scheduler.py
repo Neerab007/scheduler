@@ -238,7 +238,9 @@ class CalendarScheduler():
 
 
     def mock_data_creation(self):
-        for day in range(18,23):
+        start = datetime.utcnow().day
+        end   = int(start) + 7
+        for day in range(start,end):
             hours = random.sample(range(8, 17), 5)
             for hour in hours:
                 name = self.generate_random_name()

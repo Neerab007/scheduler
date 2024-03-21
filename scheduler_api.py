@@ -143,7 +143,7 @@ def bot(history):
 def greet(name):
     return "Hello " + name + "!"
             
-examples=[ "Can you reschedule my appointment to <Date>.", "can you change the appointment to <Date>."]            
+examples=[ "Can you reschedule my appointment to <Date>."]            
 
 with gr.Blocks() as demo:
     chatbot = gr.Chatbot(
